@@ -53,6 +53,16 @@ def main():
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bd_rct.center = (x, y)  
     vx, vy = +5, +5  
+    
+    """ばくだん２"""
+    bd_img2 = pg.Surface((20, 20))  
+    bd_img2.set_colorkey((0, 0, 0)) 
+    pg.draw.circle(bd_img2, (255, 0, 0), (10, 10), 10)
+    bd_rct2 = bd_img2.get_rect()  
+    x2, y2 = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+    bd_rct2.center = (x2, y2) 
+    vx2, vy2 = +9, +9  
+
 
     clock = pg.time.Clock()
     tmr = 0
@@ -61,10 +71,12 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
-        if kk_rct.colliderect(bd_rct):
+        if kk_rct.colliderect(bd_rct and bd_rct2):
             return    
             
+
         screen.blit(bg_img, [0, 0])
+        
 
         """こうかとん"""
         key_lst = pg.key.get_pressed()
@@ -93,6 +105,7 @@ def main():
         if key_lst[pg.K_DOWN] and key_lst[pg.K_RIGHT]:
             kk_img = KK_MS
         screen.blit(kk_img, kk_rct)  
+
         """"ばくだん"""
         bd_rct.move_ip(vx, vy)
         yoko , tate = check_bound(bd_rct)
@@ -100,7 +113,17 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1  
-        screen.blit(bd_img, bd_rct)  
+        screen.blit(bd_img, bd_rct)
+
+        if tmr > 600:
+            bd_rct2.move_ip(vx2, vy2)
+            yoko , tate = check_bound(bd_rct2)
+            if not yoko:
+                vx2 *= -1
+            if not tate:
+                vy2 *= -1 
+            screen.blit(bd_img2, bd_rct2)
+
         
         pg.display.update()
         tmr += 1
