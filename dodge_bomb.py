@@ -32,31 +32,33 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
-    
+
     """こうかとん"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400) 
-    kk_RIGHT = pg.transform.flip(kk_img, True, False)
-    KK_LEFT = pg.transform.rotozoom(kk_img, 0, 1.0)
-    KK_DAWN = pg.transform.rotozoom(kk_img, 90, 1.0)
-    KK_HS = pg.transform.rotozoom(kk_img, 45, 1)
-    KK_HU = pg.transform.rotozoom(kk_img, -45, 1.0)
-    KK_UP = pg.transform.flip(pg.transform.rotozoom(kk_img, -90, 1.0), True, False)
-    KK_MU = pg.transform.flip(pg.transform.rotozoom(kk_img, -45, 1.0), True, False)
-    KK_MS = pg.transform.flip(pg.transform.rotozoom(kk_img, 45, 1.0), True, False)
+    #こうかとん回転
+    kk_RIGHT = pg.transform.flip(kk_img, True, False) #こうかとん右
+    KK_LEFT = pg.transform.rotozoom(kk_img, 0, 1.0) #左
+    KK_DAWN = pg.transform.rotozoom(kk_img, 90, 1.0) #下
+    KK_HS = pg.transform.rotozoom(kk_img, 45, 1) #左下
+    KK_HU = pg.transform.rotozoom(kk_img, -45, 1.0) #左上
+    KK_UP = pg.transform.flip(pg.transform.rotozoom(kk_img, -90, 1.0), True, False) #上
+    KK_MU = pg.transform.flip(pg.transform.rotozoom(kk_img, -45, 1.0), True, False) #右上
+    KK_MS = pg.transform.flip(pg.transform.rotozoom(kk_img, 45, 1.0), True, False) #右下
+
     """ばくだん"""
     s = 10 #爆弾の大きさ
     bd_img = pg.Surface((20, 20))  
     bd_img.set_colorkey((0, 0, 0)) 
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), s)
     bd_rct = bd_img.get_rect()  
+    #爆弾をランダムに配置
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bd_rct.center = (x, y)  
+    #爆弾が動く値
     vx, vy = +5, +5
-    
-    
     
     """ばくだん２"""
     bd_img2 = pg.Surface((20, 20))  
@@ -80,6 +82,7 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
+        #爆弾に触れたら終了
         if kk_rct.colliderect(bd_rct):
         
             return    
@@ -101,6 +104,8 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
            kk_rct.move_ip(-sum_mv[0], -sum_mv[1]) 
+
+        #キーを押したらこうかとんのむきが変わる   
         if key_lst[pg.K_RIGHT]:
             kk_img = kk_RIGHT
         elif key_lst[pg.K_LEFT]:
@@ -127,11 +132,7 @@ def main():
         if not tate:
             vy *= -1  
         screen.blit(bd_img, bd_rct)
-        if tmr <= 300:
-            s += 10
-            
-        if tmr <= 600:
-            s += 20
+    
 
         """ばくだん２"""
         if tmr > 600:
