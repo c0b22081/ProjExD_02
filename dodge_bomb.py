@@ -46,13 +46,15 @@ def main():
     KK_MU = pg.transform.flip(pg.transform.rotozoom(kk_img, -45, 1.0), True, False)
     KK_MS = pg.transform.flip(pg.transform.rotozoom(kk_img, 45, 1.0), True, False)
     """ばくだん"""
+    s = 10 #爆弾の大きさ
     bd_img = pg.Surface((20, 20))  
     bd_img.set_colorkey((0, 0, 0)) 
-    pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
+    pg.draw.circle(bd_img, (255, 0, 0), (10, 10), s)
     bd_rct = bd_img.get_rect()  
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bd_rct.center = (x, y)  
-    vx, vy = +5, +5  
+    vx, vy = +5, +5
+    
     
     """ばくだん２"""
     bd_img2 = pg.Surface((20, 20))  
@@ -63,6 +65,11 @@ def main():
     bd_rct2.center = (x2, y2) 
     vx2, vy2 = +9, +9  
 
+    """範囲制限"""
+    #kiken = pg.Surface((1600, 60))
+    #pg.draw.rect(kiken, (255, 255, 0), (20))
+    
+
 
     clock = pg.time.Clock()
     tmr = 0
@@ -71,8 +78,12 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
-        if kk_rct.colliderect(bd_rct and bd_rct2):
+        if kk_rct.colliderect(bd_rct):
+        
             return    
+        elif kk_rct.colliderect(bd_rct2):
+            return
+        
             
 
         screen.blit(bg_img, [0, 0])
@@ -114,7 +125,13 @@ def main():
         if not tate:
             vy *= -1  
         screen.blit(bd_img, bd_rct)
+        if tmr <= 300:
+            s += 10
+            
+        if tmr <= 600:
+            s += 20
 
+        """ばくだん２"""
         if tmr > 600:
             bd_rct2.move_ip(vx2, vy2)
             yoko , tate = check_bound(bd_rct2)
@@ -123,6 +140,9 @@ def main():
             if not tate:
                 vy2 *= -1 
             screen.blit(bd_img2, bd_rct2)
+
+        """危険エリア"""
+        #screen.blit(kiken, [0, 0])
 
         
         pg.display.update()
