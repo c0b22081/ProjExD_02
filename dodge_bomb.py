@@ -37,6 +37,14 @@ def main():
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400) 
+    kk_RIGHT = pg.transform.flip(kk_img, True, False)
+    KK_LEFT = pg.transform.rotozoom(kk_img, 0, 1.0)
+    KK_DAWN = pg.transform.rotozoom(kk_img, 90, 1.0)
+    KK_HS = pg.transform.rotozoom(kk_img, 45, 1)
+    KK_HU = pg.transform.rotozoom(kk_img, -45, 1.0)
+    KK_UP = pg.transform.flip(pg.transform.rotozoom(kk_img, -90, 1.0), True, False)
+    KK_MU = pg.transform.flip(pg.transform.rotozoom(kk_img, -45, 1.0), True, False)
+    KK_MS = pg.transform.flip(pg.transform.rotozoom(kk_img, 45, 1.0), True, False)
     """ばくだん"""
     bd_img = pg.Surface((20, 20))  
     bd_img.set_colorkey((0, 0, 0)) 
@@ -68,6 +76,22 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
            kk_rct.move_ip(-sum_mv[0], -sum_mv[1]) 
+        if key_lst[pg.K_RIGHT]:
+            kk_img = kk_RIGHT
+        elif key_lst[pg.K_LEFT]:
+            kk_img = KK_LEFT
+        elif key_lst[pg.K_DOWN]:
+            kk_img = KK_DAWN
+        if key_lst[pg.K_LEFT] and key_lst[pg.K_DOWN]:
+            kk_img = KK_HS
+        if key_lst[pg.K_UP] and key_lst[pg.K_LEFT]:
+            kk_img = KK_HU
+        elif key_lst[pg.K_UP]:
+            kk_img = KK_UP
+        if key_lst[pg.K_UP] and key_lst[pg.K_RIGHT]:
+            kk_img = KK_MU
+        if key_lst[pg.K_DOWN] and key_lst[pg.K_RIGHT]:
+            kk_img = KK_MS
         screen.blit(kk_img, kk_rct)  
         """"ばくだん"""
         bd_rct.move_ip(vx, vy)
