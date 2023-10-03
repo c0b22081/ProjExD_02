@@ -18,6 +18,7 @@ def main():
     bakudan_rct = bakudan.get_rect()
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bakudan_rct.center = (x, y)
+    vx , vy = +5, +5
 
     clock = pg.time.Clock()
     tmr = 0
@@ -28,10 +29,11 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
+        bakudan_rct.move_ip(vx, vy)
         screen.blit(bakudan, bakudan_rct)
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
